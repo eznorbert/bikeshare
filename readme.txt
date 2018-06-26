@@ -1,0 +1,1 @@
+* Adapted the advice from the code view to add a function to get the user input of filters to reduce the code repetition.

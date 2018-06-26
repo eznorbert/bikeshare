@@ -8,6 +8,19 @@ MONTHS = ('', 'january', 'february', 'march', 'april', 'may', 'june', 'all')
 DAYS = ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all')
 
 
+def get_user_input(input_prompt, error_prompt, pick_list, format_value):
+    """Get interactive user input for the filters of city, month and workday!"""
+
+    while True:
+        ret = input(input_prompt)
+        ret = format_value(ret)
+        if ret in pick_list:
+            print("You have selected: {}!".format(ret.title()))
+            return ret
+        else:
+            print(error_prompt)
+
+
 def get_filters():
     """
     Asks user to specify a city, month, and day to analyze.
@@ -20,31 +33,21 @@ def get_filters():
     print('=' * 40)
     print('Hello! Let\'s explore some US bikeshare data!')
 
-    while True:
-        city = input("\nPlease specify the city in which you want to view the data!"
-                     "\nChicago, New York City or Washington (mandatory but not case sensitive): ")
-        if city.lower() in ['chicago', 'new york city', 'washington']:
-            print("You have selected the city: {}!".format(city.title()))
-            city = city.lower()
-            break
-        else:
-            print("Please specify a valid city!")
-    while True:
-        month = input("\nPlease specify a month, use 'all' for all months: ")
-        if month.lower() in MONTHS:
-            print("You have selected the month: {}!".format(month.title()))
-            month = month.lower()
-            break
-        else:
-            print("Please specify a valid month!")
-    while True:
-        day = input("\nPlease specify a workday, use 'all' for all workdays: ")
-        if day.lower() in DAYS:
-            print("You have selected the workday: {}!".format(day.title()))
-            day = day.lower()
-            break
-        else:
-            print("Please specify a valid day!\n")
+    city = get_user_input("\nPlease specify the city in which you want to view the data!"
+                          "\nChicago, New York City or Washington (mandatory but not case sensitive): ",
+                          "Please specify a valid city!",
+                          CITY_DATA.keys(),
+                          lambda x: str.lower(x))
+
+    month = get_user_input("\nPlease specify a month, use 'all' for all months: ",
+                           "Please specify a valid month!",
+                           MONTHS[1:],
+                           lambda x: str.lower(x))
+
+    day = get_user_input("\nPlease specify a workday, use 'all' for all workdays: ",
+                         "Please specify a valid day!",
+                         DAYS,
+                         lambda x: str.lower(x))
 
     print('-' * 40)
     return city, month, day
