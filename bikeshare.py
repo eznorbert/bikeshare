@@ -112,9 +112,11 @@ def station_stats(df):
     most_common_end_station = df['End Station'].mode()[0]
     print("The users ride most to the station: {}!".format(most_common_end_station))
 
-    df['Trip Combination'] = df['Start Station'] + ' -> ' + df['End Station']
-    most_common_trip = df['Trip Combination'].mode()[0]
-    print("The trip the users ride most is: {}!".format(most_common_trip))
+    _ = df[['Start Station', 'End Station', 'Gender']].groupby(['Start Station', 'End Station'])['Gender']
+    print("The trip the users ride most is from {} to {} and the total count is {}!".format(
+        _.size().nlargest(5).keys()[0][0],
+        _.size().nlargest(5).keys()[0][1],
+        _.size().nlargest(5)[0]))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-' * 40)
